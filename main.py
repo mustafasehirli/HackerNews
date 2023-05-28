@@ -19,7 +19,7 @@ def make_request():
 def link_text():
     link_soup = make_request()
     for link in link_soup.find_all("span", attrs={"class": "titleline"}):
-        link_array.append(link.text)
+        link_array.append(str(link.text).split("(")[0])
 
 
 def text_insert():
