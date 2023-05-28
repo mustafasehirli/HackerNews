@@ -7,13 +7,37 @@ window.minsize(width=500, height=700)
 window.config(padx=20, pady=20)
 
 target_url = "https://news.ycombinator.com/"
-response = requests.get(target_url)
-soup = BeautifulSoup(response.text, 'html.parser')
 link_array = []
 
-for link in soup.find_all("span", attrs={"class": "titleline"}):
-    link_array.append(link.text)
+
+def make_request():
+    response = requests.get(target_url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+    return soup
 
 
-print(link_array[0])
+def link_text():
+    link_soup = make_request()
+    for link in link_soup.find_all("span", attrs={"class": "titleline"}):
+        link_array.append(link.text)
+
+
+def text_insert():
+    for link in link_array:
+        note_text.insert("1.0", link+"\n")
+
+
+def news_click():
+    text_insert()
+
+
+link_text()
+
+tk_btn = tkinter.Button(text="NEWS", command=news_click)
+tk_btn.pack()
+
+note_text = tkinter.Text()
+note_text.config(width=400, height=560)
+note_text.pack()
+
 window.mainloop()
